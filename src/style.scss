@@ -1,9 +1,16 @@
+@font-face {
+    font-family: "FiraCode Nerd Font";
+    src: url("asset/FiraCodeNerdFontPropo-Retina.ttf");
+}
+
 * {
+    font-family: "FiraCode Nerd Font";
     margin: 0;
     padding: 0;
 }
 
-html, body {
+html,
+body {
     height: 100%;
     font-size: 18px;
 }
@@ -16,60 +23,120 @@ body {
     align-items: stretch;
 }
 
-    nav {
-        background: #3c3836;
-        border-right: 1px solid #504945;
-        width: 8rem;
+nav {
+    background: #3c3836;
+    border-right: 1px solid #504945;
+    width: 8rem;
 
-        * {
-            padding: .5rem;
-        }
+    & > * {
+        padding: 0.5rem;
+    }
 
-        &-title {
-            text-align: center;
+    &-title {
+        text-align: center;
+    }
+}
+
+main {
+    flex: 1;
+    max-height: 100%;
+    overflow-y: scroll;
+    display: flex;
+}
+
+.editor {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    font-size: 0;
+
+    &-menu {
+        width: 5rem;
+        text-align: end;
+        background: #282828;
+        border-right: 1px solid #3c3836;
+
+        .channel {
+            padding: 0.1rem 0.5rem;
+            font-size: 1rem;
         }
     }
 
-    main {
+    &-notes {
         flex: 1;
-        max-height: 100%;
-        overflow-y: scroll;
         display: flex;
+        flex-direction: column;
 
-        .editor {
+        .channel {
             display: flex;
             flex-direction: row;
-            flex: 1;
+            font-size: 1rem;
 
-            &-menu {
-                width: 8rem;
-                background: #282828;
+            div {
+                display: block;
+                width: 1rem;
+                text-align: center;
                 border-right: 1px solid #3c3836;
-
-                .channel {
-                    padding: 0 .5rem;
-                }
-            }
-
-            &-system {
-                flex: 1;
-                background: repeating-linear-gradient(90deg, #1d2021, #1d2021 1rem, #232525 1rem, #232525 2rem);
-
-                .channel {
-                    display: flex;
-                    flex-direction: row;
-
-                    div     {
-                        display: block;
-                        width: 1rem;
-                        text-align: center;
-                    }
-                }
+                padding: 0.1rem 0;
             }
         }
     }
+}
 
-.channel {
+.system {
     border: 1px #3c3836;
     border-style: none none solid none;
+}
+
+#add-system {
+    width: 100%;
+    background: #282828;
+    border: 1px #3c3836;
+    border-style: none none solid none;
+    color: #ebdbb2;
+    text-align: center;
+    font-size: 1rem;
+
+    &:hover {
+        background: #3c3836;
+        cursor: pointer;
+    }
+}
+
+.add-system-count {
+    align-self: flex-start;
+    display: inline-flex;
+    flex-direction: row;
+    background: #282828;
+    border: 1px #3c3836;
+    border-style: none solid solid none;
+
+    button {
+        width: 1rem;
+        font-size: 1rem;
+        border: none;
+        color: #ebdbb2;
+        background: #282828;
+
+        &:hover {
+            background: #3c3836;
+            cursor: pointer;
+        }
+    }
+
+    &-input {
+        background: #282828;
+        width: calc(3rem + 4px);
+        border: none;
+        border-left: 1px solid #3c3836;
+        color: #ebdbb2;
+        text-align: center;
+        font-size: 1rem;
+    }
+
+    .label {
+        border-right: 1px solid #3c3836;
+        padding-right: 0.3rem;
+        font-size: 1rem;
+    }
 }
