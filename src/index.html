@@ -14,15 +14,9 @@
         </nav>
         <main>
             <div class="editor">
-                <div class="editor-menu">
+                <div class="editor-label">
                     <div class="content-area">
                         <div class="system">
-                            <div class="channel">
-                                <div class="name">one</div>
-                            </div>
-                            <div class="channel">
-                                <div class="name">one</div>
-                            </div>
                             <div class="channel">
                                 <div class="name">one</div>
                             </div>
@@ -65,24 +59,6 @@
                                     <div>1</div>
                                     <div>1</div>
                                 </div>
-                                <div class="channel">
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                </div>
-                                <div class="channel">
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                    <div>1</div>
-                                </div>
                             </div>
                         </div>
                         <div class="system">
@@ -115,6 +91,16 @@
                                     <div>1</div>
                                 </div>
                             </div>
+
+                            <div class="system-edit">
+                                <button class="shorten">&lt;</button>
+                                <input
+                                    value="32"
+                                    type="text"
+                                    class="system-length"
+                                />
+                                <button class="lengthen">&gt;</button>
+                            </div>
                         </div>
                         <div class="system">
                             <div class="note-area">
@@ -145,12 +131,23 @@
                                     <div>1</div>
                                     <div>1</div>
                                 </div>
+                            </div>
+
+                            <div class="system-edit">
+                                <button class="shorten"><</button>
+                                <input
+                                    value="32"
+                                    type="text"
+                                    class="system-length"
+                                />
+                                <button class="lengthen">></button>
                             </div>
                         </div>
                     </div>
                     <div class="add-system-count">
                         <button id="dec-len-count"><</button>
                         <input
+                            value="32"
                             type="text"
                             id="add-system-count"
                             class="add-system-count-input"
@@ -161,5 +158,7 @@
                 </div>
             </div>
         </main>
+        <script src="jquery.min.js"></script>
+        <script src="main.js"></script>
     </body>
 </html>

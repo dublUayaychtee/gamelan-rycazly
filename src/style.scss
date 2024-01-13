@@ -49,8 +49,9 @@ main {
     flex-direction: row;
     flex: 1;
     font-size: 0;
+    max-width: 100%;
 
-    &-menu {
+    &-label {
         width: 5rem;
         text-align: end;
         background: #282828;
@@ -66,6 +67,7 @@ main {
         flex: 1;
         display: flex;
         flex-direction: column;
+        overflow-x: scroll;
 
         .channel {
             display: flex;
@@ -80,12 +82,49 @@ main {
                 padding: 0.1rem 0;
             }
         }
+
+        .system {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+        }
     }
 }
 
 .system {
     border: 1px #3c3836;
     border-style: none none solid none;
+}
+
+.system-edit {
+    font-size: 0;
+    border: 1px solid #3c3836;
+    margin: 0 0.5rem;
+    position: absolute;
+    right: 0;
+
+    & > * {
+        color: #ebdbb2;
+        font-size: 1rem;
+        background: #282828;
+        border: none;
+        text-align: center;
+    }
+
+    button {
+        width: 1rem;
+
+        &:hover {
+            background: #3c3836;
+            cursor: pointer;
+        }
+    }
+
+    input {
+        width: 3rem;
+        border: 1px #3c3836;
+        border-style: none solid;
+    }
 }
 
 #add-system {
