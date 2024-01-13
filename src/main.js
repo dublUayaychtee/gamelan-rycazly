@@ -14,55 +14,80 @@ const Instrument = {
     Gentora: 12,
 };
 
+const ReverseInstrument = Object.entries(Instrument).reduce((ret, entry) => {
+    const [key, val] = entry;
+    ret[val] = key;
+    return ret;
+}, {});
+
 var data = {
     i: [
         // instruments
-        Gangsa,
-        Gangsa,
-        Kajar,
+        Instrument.Pemade,
+        Instrument.Pemade,
+        Instrument.Kajar,
     ],
-    o: [1, 1, 2, 1, 1, 2], // song pattern order
     l: [8, 8, 16], // lengths of patterns
     p: [
         // patterns
         [
             // 1st pattern
-            [
-                // Gangsa 1
-                11, 0, 14, 0, 11, 0, 8, 0,
-            ],
-            [
-                // Gangsa 2
-                0, 12, 0, 12, 0, 9, 0, 9,
-            ],
-            [
-                // Kajar
-                1, 0, 0, 0, 1, 0, 0, 0,
-            ],
+            "f.j.f.a.", // Gangsa 1
+            ".g.g.s.s", // Gangsa 2
+            "x   x   ", // Kajar
         ],
         [
             // 2nd pattern
-            [
-                // Gangsa 1
-                11, 0, 8, 0, 7, 0, 5, 0, 8, 0, 11, 0, 11, 0, 8, 0,
-            ],
-            [
-                // Gangsa 2
-                0, 7, 0, 5, 0, 4, 0, 7, 0, 9, 0, 12, 0, 9, 0, 9,
-            ],
-            [
-                // Kajar
-                1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0,
-            ],
+            "f.j.f.a.", // Gangsa 1
+            ".g.g.s.s", // Gangsa 2
+            "x   x   ", // Kajar
+        ],
+        [
+            // 3rd pattern
+            "f.a.m.b.a.f.f.a.", // Gangsa 1
+            ".m.b.v.m.s.g.s.s", // Gangsa 2
+            "x   x   x   x   ", // Kajar
         ],
     ],
 };
 
 function resetBoard() {
     $(".content-area").empty();
-    data.o.forEach((pattern) => {
-        $(".editor-label .content-area").append("<div />", {
+    data.p.forEach((pattern, patternIndex) => {
+        let systemLabel = $("<div />", {
             class: "system",
         });
+        data.i.forEach((instrument) => {
+            let channel = $("<div />", {
+                class: "channel",
+                text: ReverseInstrument[instrument],
+            });
+            systemLabel.append(channel);
+        });
+
+        let systemNotes = $("<div />", {
+            class: "system",
+        });
+        let noteArea = $("<div />", {
+            class: "note-area",
+        });
+
+        pattern.forEach((notes, instrumentIndex) => {
+            let channel = $("<div />", {
+                class: "channel",
+            });
+            console.log(instrumentIndex, notes);
+            if (notes.length <= data.l[patternIndex]) {
+                for (i = 0; i < data.l[patternIndex]; i++) {
+                    channel.append("<div />", {
+                        text: notes[i],
+                    });
+                }
+            }
+            noteArea.append(channel);
+        });
+        $(".editor-label .content-area").append(systemLabel);
+        systemNotes.append(noteArea);
+        $(".editor-notes .content-area").append(systemNotes);
     });
 }

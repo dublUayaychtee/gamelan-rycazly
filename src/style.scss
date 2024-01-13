@@ -7,6 +7,7 @@
     font-family: "FiraCode Nerd Font";
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 html,
@@ -39,9 +40,9 @@ nav {
 
 main {
     flex: 1;
-    max-height: 100%;
-    overflow-y: scroll;
+    min-width: 0;
     display: flex;
+    flex-direction: column;
 }
 
 .editor {
@@ -49,7 +50,7 @@ main {
     flex-direction: row;
     flex: 1;
     font-size: 0;
-    max-width: 100%;
+    min-width: 0;
 
     &-label {
         width: 5rem;
@@ -67,7 +68,12 @@ main {
         flex: 1;
         display: flex;
         flex-direction: column;
-        overflow-x: scroll;
+        min-width: 0;
+
+        .content-area {
+            overflow-x: scroll;
+            min-width: 0;
+        }
 
         .channel {
             display: flex;
@@ -94,9 +100,10 @@ main {
 .system {
     border: 1px #3c3836;
     border-style: none none solid none;
+    width: 100%;
 }
 
-.system-edit {
+.system-menu {
     font-size: 0;
     border: 1px solid #3c3836;
     margin: 0 0.5rem;
