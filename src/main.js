@@ -14,11 +14,24 @@ const Instrument = {
     Gentora: 12,
 };
 
+const arrowMovement = {
+    38: [0, -1, 0],
+    40: [0, 1, 0],
+    37: [0, 0, -1],
+    39: [0, 0, 1],
+};
+
 const ReverseInstrument = Object.entries(Instrument).reduce((ret, entry) => {
     const [key, val] = entry;
     ret[val] = key;
     return ret;
 }, {});
+
+var cursorSystem = 1;
+var cursorInstrument = 1;
+var cursorX = 1;
+
+var oncangMode = false;
 
 var data = {
     i: [
@@ -57,9 +70,9 @@ function resetBoard() {
         let systemLabel = $("<div />", {
             class: "system",
         });
-        data.i.forEach((instrument) => {
+        data.i.forEach((instrument, instrIndex) => {
             let channel = $("<div />", {
-                class: "channel",
+                class: "channel channel" + instrIndex,
                 text: ReverseInstrument[instrument],
             });
             systemLabel.append(channel);
@@ -72,16 +85,18 @@ function resetBoard() {
             class: "note-area",
         });
 
-        pattern.forEach((notes, instrumentIndex) => {
+        pattern.forEach((notes, instrIndex) => {
             let channel = $("<div />", {
-                class: "channel",
+                class: "channel channel" + instrIndex,
             });
-            console.log(instrumentIndex, notes);
+            console.log(instrIndex, notes);
             if (notes.length <= data.l[patternIndex]) {
-                for (i = 0; i < data.l[patternIndex]; i++) {
-                    channel.append("<div />", {
-                        text: notes[i],
-                    });
+                for (i = 0; i < notes.length; i++) {
+                    channel.append(
+                        $("<div />").prop({
+                            innerHTML: notes[i],
+                        })
+                    );
                 }
             }
             noteArea.append(channel);
@@ -91,3 +106,83 @@ function resetBoard() {
         $(".editor-notes .content-area").append(systemNotes);
     });
 }
+
+function updateCursor() {
+    $(".cursor").removeClass("cursor");
+    $(".highlight").removeClass("highlight");
+    $(".note-area .channel div:nth-child(" + cursorX + ")").addClass(
+        "highlight"
+    );
+    $(
+        ".system:nth-child(" +
+            cursorSystem +
+            ") .channel:nth-child(" +
+            cursorInstrument +
+            ") div"
+    ).addClass("highlight");
+    $(
+        ".system:nth-child(" +
+            cursorSystem +
+            ") .channel:nth-child(" +
+            cursorInstrument +
+            ") div:nth-child(" +
+            cursorX +
+            ")"
+    ).addClass("cursor");
+}
+
+function moveCursor(system, instrument, x) {
+    system = Math.min(Math.max(1, system), data.p.length);
+
+    if (instrument < 1) {
+        if (system > 1) {
+            system = Math.min(Math.max(1, system - 1), data.p.length);
+            instrument = data.p[system - 1].length;
+        } else {
+            instrument = 1;
+        }
+    } else if (instrument > data.p[system - 1].length) {
+        if (system < data.p.length) {
+            system = Math.min(Math.max(1, system + 1), data.p.length);
+            instrument = 1;
+        } else {
+            instrument = data.p[system - 1].length;
+        }
+    }
+
+    if (x < 1) {
+        if (system > 1) {
+            system = Math.min(Math.max(1, system - 1), data.p.length);
+            x = data.p[system - 1][instrument - 1].length;
+        } else {
+            x = 1;
+        }
+    } else if (x > data.p[system - 1][instrument - 1].length) {
+        if (system < data.p.length) {
+            system = Math.min(Math.max(1, system + 1), data.p.length);
+            x = 1;
+        } else {
+            x = data.p[system - 1][instrument - 1].length;
+        }
+    }
+
+    cursorSystem = system;
+    cursorInstrument = instrument;
+    cursorX = x;
+
+    updateCursor();
+}
+
+$(function () {
+    resetBoard();
+    updateCursor();
+});
+
+$(window).keydown(function (e) {
+    var movement = arrowMovement[e.keyCode] || [0, 0, 0];
+    moveCursor(
+        ...movement.map((v, i) => {
+            return [cursorSystem, cursorInstrument, cursorX][i] + v;
+        })
+    );
+});
