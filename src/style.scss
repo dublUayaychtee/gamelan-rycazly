@@ -96,6 +96,15 @@ main {
                     background: #ebdbb2;
                     color: #282828;
                 }
+
+                &.missing {
+                    color: #a89984;
+                }
+
+                &.extra {
+                    color: #a89984;
+                    border-color: transparent;
+                }
             }
         }
 

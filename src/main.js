@@ -94,12 +94,38 @@ function resetBoard() {
             });
             console.log(instrIndex, notes);
             if (notes.length <= data.l[patternIndex]) {
+                for (i = 0; i < data.l[patternIndex]; i++) {
+                    if (notes[i] === undefined) {
+                        channel.append(
+                            $("<div />").prop({
+                                innerHTML: "#",
+                                class: "missing",
+                            })
+                        );
+                    } else {
+                        channel.append(
+                            $("<div />").prop({
+                                innerHTML: notes[i],
+                            })
+                        );
+                    }
+                }
+            } else {
                 for (i = 0; i < notes.length; i++) {
-                    channel.append(
-                        $("<div />").prop({
-                            innerHTML: notes[i],
-                        })
-                    );
+                    if (i < data.l[patternIndex]) {
+                        channel.append(
+                            $("<div />").prop({
+                                innerHTML: notes[i],
+                            })
+                        );
+                    } else {
+                        channel.append(
+                            $("<div />").prop({
+                                innerHTML: notes[i],
+                                class: "extra",
+                            })
+                        );
+                    }
                 }
             }
             noteArea.append(channel);
@@ -135,34 +161,34 @@ function updateCursor() {
 }
 
 function moveCursor(system, instrument, x, noteData) {
-    system = Math.min(Math.max(1, system), noteData.length);
+    system = Math.min(Math.max(1, system), noteData.p.length);
 
     if (instrument < 1) {
         if (system > 1) {
-            system = Math.min(Math.max(1, system - 1), noteData.length);
-            instrument = noteData[system - 1].length;
+            system = Math.min(Math.max(1, system - 1), noteData.p.length);
+            instrument = noteData.p[system - 1].length;
         } else {
             instrument = 1;
         }
-    } else if (instrument > noteData[system - 1].length) {
-        if (system < noteData.length) {
-            system = Math.min(Math.max(1, system + 1), noteData.length);
+    } else if (instrument > noteData.p[system - 1].length) {
+        if (system < noteData.p.length) {
+            system = Math.min(Math.max(1, system + 1), noteData.p.length);
             instrument = 1;
         } else {
-            instrument = noteData[system - 1].length;
+            instrument = noteData.p[system - 1].length;
         }
     }
 
     if (x < 1) {
         if (system > 1) {
             system = system - 1;
-            x = noteData[system - 1][instrument - 1].length;
+            x = noteData.p[system - 1][instrument - 1].length;
         } else {
-            system = noteData.length;
-            x = noteData[system - 1][instrument - 1].length;
+            system = noteData.p.length;
+            x = noteData.p[system - 1][instrument - 1].length;
         }
-    } else if (x > noteData[system - 1][instrument - 1].length) {
-        if (system < noteData.length) {
+    } else if (x > noteData.l[system - 1]) {
+        if (system < noteData.p.length) {
             system = system + 1;
             x = 1;
         } else {
@@ -185,7 +211,7 @@ $(window).keydown(function (e) {
         ...movement.map((v, i) => {
             return [cursorSystem, cursorInstrument, cursorX][i] + v;
         }),
-        data.p
+        data
     );
     updateCursor();
 });
