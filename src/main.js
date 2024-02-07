@@ -204,6 +204,7 @@ function moveCursor(system, instrument, x, noteData) {
 
 function updateURL() {
     jsonurl.compress(data).then((result) => {
+        console.log(result);
         window.history.replaceState(null, document.title, "/#" + result);
     });
 }
