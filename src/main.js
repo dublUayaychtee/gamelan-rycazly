@@ -1,3 +1,5 @@
+const jsonurl = JsonUrl("lzma");
+
 const Instrument = {
     Gong: 0,
     Kajar: 1,
@@ -200,6 +202,12 @@ function moveCursor(system, instrument, x, noteData) {
     return [system, instrument, x];
 }
 
+function updateURL() {
+    jsonurl.compress(data).then((result) => {
+        window.history.replaceState(null, document.title, "/#" + result);
+    });
+}
+
 $(function () {
     resetBoard();
     updateCursor();
@@ -214,4 +222,5 @@ $(window).keydown(function (e) {
         data
     );
     updateCursor();
+    updateURL();
 });
