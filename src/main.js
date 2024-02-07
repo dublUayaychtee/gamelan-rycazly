@@ -12,6 +12,9 @@ const Instrument = {
     Suling: 10,
     Rebab: 11,
     Gentora: 12,
+    Tempo: 13,
+    Volume: 14,
+    VolumeGlobal: 15,
 };
 
 const arrowMovement = {
