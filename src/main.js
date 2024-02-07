@@ -131,46 +131,44 @@ function updateCursor() {
     ).addClass("cursor");
 }
 
-function moveCursor(system, instrument, x) {
-    system = Math.min(Math.max(1, system), data.p.length);
+function moveCursor(system, instrument, x, noteData) {
+    system = Math.min(Math.max(1, system), noteData.length);
 
     if (instrument < 1) {
         if (system > 1) {
-            system = Math.min(Math.max(1, system - 1), data.p.length);
-            instrument = data.p[system - 1].length;
+            system = Math.min(Math.max(1, system - 1), noteData.length);
+            instrument = noteData[system - 1].length;
         } else {
             instrument = 1;
         }
-    } else if (instrument > data.p[system - 1].length) {
-        if (system < data.p.length) {
-            system = Math.min(Math.max(1, system + 1), data.p.length);
+    } else if (instrument > noteData[system - 1].length) {
+        if (system < noteData.length) {
+            system = Math.min(Math.max(1, system + 1), noteData.length);
             instrument = 1;
         } else {
-            instrument = data.p[system - 1].length;
+            instrument = noteData[system - 1].length;
         }
     }
 
     if (x < 1) {
         if (system > 1) {
-            system = Math.min(Math.max(1, system - 1), data.p.length);
-            x = data.p[system - 1][instrument - 1].length;
+            system = system - 1;
+            x = noteData[system - 1][instrument - 1].length;
         } else {
-            x = 1;
+            system = noteData.length;
+            x = noteData[system - 1][instrument - 1].length;
         }
-    } else if (x > data.p[system - 1][instrument - 1].length) {
-        if (system < data.p.length) {
-            system = Math.min(Math.max(1, system + 1), data.p.length);
+    } else if (x > noteData[system - 1][instrument - 1].length) {
+        if (system < noteData.length) {
+            system = system + 1;
             x = 1;
         } else {
-            x = data.p[system - 1][instrument - 1].length;
+            system = 1;
+            x = 1;
         }
     }
 
-    cursorSystem = system;
-    cursorInstrument = instrument;
-    cursorX = x;
-
-    updateCursor();
+    return [system, instrument, x];
 }
 
 $(function () {
@@ -180,9 +178,11 @@ $(function () {
 
 $(window).keydown(function (e) {
     var movement = arrowMovement[e.keyCode] || [0, 0, 0];
-    moveCursor(
+    [cursorSystem, cursorInstrument, cursorX] = moveCursor(
         ...movement.map((v, i) => {
             return [cursorSystem, cursorInstrument, cursorX][i] + v;
-        })
+        }),
+        data.p
     );
+    updateCursor();
 });
